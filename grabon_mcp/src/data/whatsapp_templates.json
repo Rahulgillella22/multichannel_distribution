@@ -1,0 +1,272 @@
+{
+    "WA_FOOD_EN_URGENCY": {
+        "template_id": "WA_FOOD_EN_URGENCY",
+        "category_id": "food",
+        "language": "english",
+        "variant": "urgency",
+        "structure": "⚡ {{merchant}} Flash Sale! {{discount}} on orders above {{min_order}}. Ends {{expiry}}! Grab now →",
+        "use_when": "Emergency food deals, any restaurant or delivery app, expiring within hours. Strong urgency needed.",
+        "char_limit_safe": 120
+    },
+    "WA_FOOD_EN_VALUE": {
+        "template_id": "WA_FOOD_EN_VALUE",
+        "category_id": "food",
+        "language": "english",
+        "variant": "value",
+        "structure": "Save big with {{merchant}}! {{discount}} on your next order. Min order {{min_order}}. Valid till {{expiry}} 🍽️",
+        "use_when": "Scheduled food deals where saving money is the main message.",
+        "char_limit_safe": 115
+    },
+    "WA_FOOD_EN_SOCIAL": {
+        "template_id": "WA_FOOD_EN_SOCIAL",
+        "category_id": "food",
+        "language": "english",
+        "variant": "social_proof",
+        "structure": "Thousands already ordered! {{merchant}} {{discount}} off. Min {{min_order}}. Don't miss — ends {{expiry}} 🔥",
+        "use_when": "Food deals where community proof is the hook. Re-engaging inactive users.",
+        "char_limit_safe": 118
+    },
+    "WA_FOOD_HI_URGENCY": {
+        "template_id": "WA_FOOD_HI_URGENCY",
+        "category_id": "food",
+        "language": "hindi",
+        "variant": "urgency",
+        "structure": "⚡ {{merchant}} का धमाका! {{discount}} की छूट। {{min_order}} से ऑर्डर करें। {{expiry}} तक!",
+        "use_when": "Emergency food deals for Hindi speaking users. Assertive urgent tone.",
+        "char_limit_safe": 110
+    },
+    "WA_FOOD_HI_VALUE": {
+        "template_id": "WA_FOOD_HI_VALUE",
+        "category_id": "food",
+        "language": "hindi",
+        "variant": "value",
+        "structure": "पैसे बचाओ! {{merchant}} पर {{discount}} की छूट। Min ऑर्डर {{min_order}}। {{expiry}} तक valid 🍛",
+        "use_when": "Scheduled food deals for Hindi users emphasizing savings.",
+        "char_limit_safe": 108
+    },
+    "WA_FOOD_HI_SOCIAL": {
+        "template_id": "WA_FOOD_HI_SOCIAL",
+        "category_id": "food",
+        "language": "hindi",
+        "variant": "social_proof",
+        "structure": "हजारों ने order किया! {{merchant}} {{discount}} off। {{min_order}} से। {{expiry}} से पहले लो 🔥",
+        "use_when": "Social proof food deals for Hindi users. Re-engagement.",
+        "char_limit_safe": 112
+    },
+    "WA_FOOD_TE_URGENCY": {
+        "template_id": "WA_FOOD_TE_URGENCY",
+        "category_id": "food",
+        "language": "telugu",
+        "variant": "urgency",
+        "structure": "⚡ {{merchant}} లో సేల్! {{discount}} తగ్గింపు. {{min_order}} పైన ఆర్డర్. {{expiry}} వరకే!",
+        "use_when": "Emergency food deals for Telugu speaking users. Community and family warmth.",
+        "char_limit_safe": 105
+    },
+    "WA_FOOD_TE_VALUE": {
+        "template_id": "WA_FOOD_TE_VALUE",
+        "category_id": "food",
+        "language": "telugu",
+        "variant": "value",
+        "structure": "{{merchant}} లో {{discount}} ఆదా చేయండి! {{min_order}} పైన ఆర్డర్ చేయండి. {{expiry}} వరకు valid 🍱",
+        "use_when": "Scheduled food deals for Telugu users emphasizing savings.",
+        "char_limit_safe": 110
+    },
+    "WA_FOOD_TE_SOCIAL": {
+        "template_id": "WA_FOOD_TE_SOCIAL",
+        "category_id": "food",
+        "language": "telugu",
+        "variant": "social_proof",
+        "structure": "వేలమంది ఆర్డర్ చేశారు! {{merchant}} {{discount}} తగ్గింపు. {{min_order}} పైన. {{expiry}} లోపు తీసుకోండి",
+        "use_when": "Social proof food deals for Telugu users. Re-engagement.",
+        "char_limit_safe": 112
+    },
+    "WA_JEWEL_EN_URGENCY": {
+        "template_id": "WA_JEWEL_EN_URGENCY",
+        "category_id": "jewellery",
+        "language": "english",
+        "variant": "urgency",
+        "structure": "Exclusive! {{merchant}} — {{discount}} on {{product_type}}. Timeless elegance awaits. Till {{expiry}} ✨",
+        "use_when": "Urgent premium jewellery deals. Prestigious tone required.",
+        "char_limit_safe": 115
+    },
+    "WA_JEWEL_EN_VALUE": {
+        "template_id": "WA_JEWEL_EN_VALUE",
+        "category_id": "jewellery",
+        "language": "english",
+        "variant": "value",
+        "structure": "{{merchant}} precious savings! {{discount}} off on {{product_type}}. A rare offer. Valid till {{expiry}} 💎",
+        "use_when": "Scheduled jewellery deals emphasizing value and rarity.",
+        "char_limit_safe": 112
+    },
+    "WA_JEWEL_EN_SOCIAL": {
+        "template_id": "WA_JEWEL_EN_SOCIAL",
+        "category_id": "jewellery",
+        "language": "english",
+        "variant": "social_proof",
+        "structure": "Coveted by thousands! {{merchant}} {{discount}} on {{product_type}}. Limited pieces. Till {{expiry}} 👑",
+        "use_when": "Social proof jewellery deals. Exclusivity angle.",
+        "char_limit_safe": 110
+    },
+    "WA_JEWEL_HI_URGENCY": {
+        "template_id": "WA_JEWEL_HI_URGENCY",
+        "category_id": "jewellery",
+        "language": "hindi",
+        "variant": "urgency",
+        "structure": "विशेष अवसर! {{merchant}} पर {{product_type}} में {{discount}} की छूट। {{expiry}} तक सीमित ✨",
+        "use_when": "Urgent jewellery deals for Hindi users. Festive and occasion context.",
+        "char_limit_safe": 108
+    },
+    "WA_JEWEL_HI_VALUE": {
+        "template_id": "WA_JEWEL_HI_VALUE",
+        "category_id": "jewellery",
+        "language": "hindi",
+        "variant": "value",
+        "structure": "{{merchant}} का शानदार offer! {{product_type}} पर {{discount}} की बचत। {{expiry}} तक valid 💎",
+        "use_when": "Scheduled jewellery deals for Hindi users. Aspirational value.",
+        "char_limit_safe": 108
+    },
+    "WA_JEWEL_HI_SOCIAL": {
+        "template_id": "WA_JEWEL_HI_SOCIAL",
+        "category_id": "jewellery",
+        "language": "hindi",
+        "variant": "social_proof",
+        "structure": "हजारों ने पसंद किया! {{merchant}} {{product_type}} पर {{discount}} छूट। सीमित stock। {{expiry}} तक 👑",
+        "use_when": "Social proof jewellery for Hindi users.",
+        "char_limit_safe": 110
+    },
+    "WA_JEWEL_TE_URGENCY": {
+        "template_id": "WA_JEWEL_TE_URGENCY",
+        "category_id": "jewellery",
+        "language": "telugu",
+        "variant": "urgency",
+        "structure": "ప్రత్యేక ఆఫర్! {{merchant}} లో {{product_type}} పై {{discount}} తగ్గింపు. {{expiry}} వరకు మాత్రమే ✨",
+        "use_when": "Urgent jewellery deals for Telugu users. Auspicious and precious references.",
+        "char_limit_safe": 108
+    },
+    "WA_JEWEL_TE_VALUE": {
+        "template_id": "WA_JEWEL_TE_VALUE",
+        "category_id": "jewellery",
+        "language": "telugu",
+        "variant": "value",
+        "structure": "{{merchant}} లో {{product_type}} పై {{discount}} ఆదా చేయండి. అద్భుతమైన అవకాశం. {{expiry}} వరకు 💎",
+        "use_when": "Scheduled jewellery deals for Telugu users. Precious savings tone.",
+        "char_limit_safe": 110
+    },
+    "WA_JEWEL_TE_SOCIAL": {
+        "template_id": "WA_JEWEL_TE_SOCIAL",
+        "category_id": "jewellery",
+        "language": "telugu",
+        "variant": "social_proof",
+        "structure": "వేలమంది ఇష్టపడ్డారు! {{merchant}} లో {{product_type}} పై {{discount}} తగ్గింపు. {{expiry}} వరకే 👑",
+        "use_when": "Social proof jewellery for Telugu users.",
+        "char_limit_safe": 110
+    },
+    "WA_FASHION_EN_URGENCY": {
+        "template_id": "WA_FASHION_EN_URGENCY",
+        "category_id": "fashion",
+        "language": "english",
+        "variant": "urgency",
+        "structure": "🔥 {{merchant}} style drop! {{discount}} off. This season's must-haves. Ends {{expiry}}. Shop now!",
+        "use_when": "Urgent fashion deals. Trend and season context.",
+        "char_limit_safe": 112
+    },
+    "WA_FASHION_EN_VALUE": {
+        "template_id": "WA_FASHION_EN_VALUE",
+        "category_id": "fashion",
+        "language": "english",
+        "variant": "value",
+        "structure": "{{merchant}} sale! {{discount}} on this season's best looks. Min order {{min_order}}. Valid till {{expiry}} 👗",
+        "use_when": "Scheduled fashion deals. Value focus.",
+        "char_limit_safe": 115
+    },
+    "WA_FASHION_EN_SOCIAL": {
+        "template_id": "WA_FASHION_EN_SOCIAL",
+        "category_id": "fashion",
+        "language": "english",
+        "variant": "social_proof",
+        "structure": "Everyone's shopping {{merchant}}! {{discount}} off trends. Don't be left out. Ends {{expiry}} 💃",
+        "use_when": "Social proof fashion. FOMO and community angle.",
+        "char_limit_safe": 113
+    },
+    "WA_FASHION_HI_URGENCY": {
+        "template_id": "WA_FASHION_HI_URGENCY",
+        "category_id": "fashion",
+        "language": "hindi",
+        "variant": "urgency",
+        "structure": "🔥 {{merchant}} sale! {{discount}} की छूट। इस season के best looks। {{expiry}} तक!",
+        "use_when": "Urgent fashion deals for Hindi users.",
+        "char_limit_safe": 108
+    },
+    "WA_FASHION_HI_VALUE": {
+        "template_id": "WA_FASHION_HI_VALUE",
+        "category_id": "fashion",
+        "language": "hindi",
+        "variant": "value",
+        "structure": "{{merchant}} पर {{discount}} की बचत। शानदार fashion deals। Min {{min_order}}। {{expiry}} तक 👗",
+        "use_when": "Scheduled fashion deals for Hindi users.",
+        "char_limit_safe": 110
+    },
+    "WA_FASHION_HI_SOCIAL": {
+        "template_id": "WA_FASHION_HI_SOCIAL",
+        "category_id": "fashion",
+        "language": "hindi",
+        "variant": "social_proof",
+        "structure": "सब खरीद रहे हैं! {{merchant}} पर {{discount}} छूट। {{expiry}} से पहले लो 💃",
+        "use_when": "Social proof fashion for Hindi users.",
+        "char_limit_safe": 105
+    },
+    "WA_FASHION_TE_URGENCY": {
+        "template_id": "WA_FASHION_TE_URGENCY",
+        "category_id": "fashion",
+        "language": "telugu",
+        "variant": "urgency",
+        "structure": "🔥 {{merchant}} సేల్! {{discount}} తగ్గింపు. ఈ సీజన్ బెస్ట్ స్టైల్స్. {{expiry}} వరకే!",
+        "use_when": "Urgent fashion deals for Telugu users.",
+        "char_limit_safe": 108
+    },
+    "WA_FASHION_TE_VALUE": {
+        "template_id": "WA_FASHION_TE_VALUE",
+        "category_id": "fashion",
+        "language": "telugu",
+        "variant": "value",
+        "structure": "{{merchant}} లో {{discount}} ఆదా చేయండి. ఫ్యాషన్ డీల్స్. Min {{min_order}}. {{expiry}} వరకు 👗",
+        "use_when": "Scheduled fashion deals for Telugu users.",
+        "char_limit_safe": 110
+    },
+    "WA_FASHION_TE_SOCIAL": {
+        "template_id": "WA_FASHION_TE_SOCIAL",
+        "category_id": "fashion",
+        "language": "telugu",
+        "variant": "social_proof",
+        "structure": "అందరూ కొంటున్నారు! {{merchant}} లో {{discount}} తగ్గింపు. {{expiry}} లోపు తీసుకోండి 💃",
+        "use_when": "Social proof fashion for Telugu users.",
+        "char_limit_safe": 108
+    },
+    "WA_GENERAL_EN": {
+        "template_id": "WA_GENERAL_EN",
+        "category_id": "general",
+        "language": "english",
+        "variant": "urgency",
+        "structure": "{{merchant}} special offer! {{discount}} off. Valid till {{expiry}}. Grab now! 🎉",
+        "use_when": "Use when no specific category template matches. Works for any deal type.",
+        "char_limit_safe": 100
+    },
+    "WA_GENERAL_HI": {
+        "template_id": "WA_GENERAL_HI",
+        "category_id": "general",
+        "language": "hindi",
+        "variant": "urgency",
+        "structure": "{{merchant}} का special offer! {{discount}} की छूट। {{expiry}} तक। अभी लो! 🎉",
+        "use_when": "Hindi fallback for any category when specific template missing.",
+        "char_limit_safe": 100
+    },
+    "WA_GENERAL_TE": {
+        "template_id": "WA_GENERAL_TE",
+        "category_id": "general",
+        "language": "telugu",
+        "variant": "urgency",
+        "structure": "{{merchant}} స్పెషల్ ఆఫర్! {{discount}} తగ్గింపు. {{expiry}} వరకు. ఇప్పుడే తీసుకోండి! 🎉",
+        "use_when": "Telugu fallback for any category when specific template missing.",
+        "char_limit_safe": 100
+    }
+}

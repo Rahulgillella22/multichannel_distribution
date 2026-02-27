@@ -1,0 +1,59 @@
+{
+    "food": {
+        "tone": "informal energetic fun",
+        "style_guide": "Write like a food-loving friend recommending a deal. Use energy, excitement, and mouth-watering descriptions. Short sentences. Active voice. Create FOMO without being aggressive.",
+        "example_words": "Hungry, Grab, Yummy, Sizzling, Delicious, Don't miss, Hot",
+        "avoid": "formal language, corporate tone, passive voice, complex sentences",
+        "send_times": [
+            "11:30",
+            "18:30"
+        ]
+    },
+    "jewellery": {
+        "tone": "premium sophisticated aspirational",
+        "style_guide": "Write with elegance and prestige. Use occasion-based and aspirational language. For Indian context, reference festivals, auspicious occasions, gifts. Never feel cheap or discount-heavy.",
+        "example_words": "Exclusive, Precious, Timeless, Elegant, Coveted, Rare, Auspicious",
+        "avoid": "casual slang, food references, heavy discount language, aggressive urgency",
+        "send_times": [
+            "10:00",
+            "18:00"
+        ]
+    },
+    "fashion": {
+        "tone": "trendy stylish confident",
+        "style_guide": "Write like a style-conscious friend sharing a hot tip. Use fashion vocabulary, trend references, season context and FOMO triggers. Reference current season.",
+        "example_words": "Style, Trendy, Must-have, Chic, Look, Season, Fresh, New",
+        "avoid": "outdated references, overly formal phrases, generic discount language",
+        "send_times": [
+            "10:00",
+            "20:00"
+        ]
+    },
+    "travel": {
+        "tone": "adventurous aspirational wanderlust",
+        "style_guide": "Paint vivid destination pictures. Use escape and adventure language. Reference weekends and getaways. Appeal to the travel-hungry urban Indian.",
+        "example_words": "Explore, Getaway, Adventure, Escape, Journey, Discover, Wander",
+        "avoid": "price-focused language, corporate travel phrases, office metaphors",
+        "send_times": [
+            "18:00"
+        ]
+    },
+    "electronics": {
+        "tone": "tech-savvy smart value-focused",
+        "style_guide": "Speak to the smart buyer. Reference specs, savings, and smart decisions. Use upgrade language. Appeal to the tech-conscious Indian consumer who researches before buying.",
+        "example_words": "Upgrade, Smart buy, Tech, Power, Performance, Save, Deal",
+        "avoid": "vague descriptions, non-technical filler words, luxury language",
+        "send_times": [
+            "10:00"
+        ]
+    },
+    "grocery": {
+        "tone": "practical helpful family-oriented",
+        "style_guide": "Write like a helpful neighbor sharing a good deal. Focus on savings, family needs, and weekly planning. Relatable and everyday language. No pretension.",
+        "example_words": "Fresh, Save, Weekly, Family, Home, Essentials, Stock up",
+        "avoid": "luxury language, complex vocabulary, aspirational language",
+        "send_times": [
+            "09:00"
+        ]
+    }
+}
