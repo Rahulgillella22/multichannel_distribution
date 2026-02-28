@@ -123,7 +123,7 @@ async function sendImmediate(coupon_id) {
             const result = await postToWebhook(channel, payload);
             const status = result.status || 'failed';
 
-            await DeliveryLogRepository.create({ coupon_id, channel, language, variant, status });
+            await DeliveryLogRepository.create({ coupon_id, user_id: user.user_id, user_name: user.name || user.user_id, channel, language, variant, status });
             summary[channel].sent++;
             if (status === 'delivered') summary[channel].delivered++;
             else summary[channel].failed++;

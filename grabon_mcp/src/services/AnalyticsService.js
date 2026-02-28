@@ -8,6 +8,7 @@ async function getDeliveryReport(coupon_id) {
     if (!coupon) throw new Error('Coupon not found');
 
     const channelSummary = await DeliveryLogRepository.getSummaryByCoupon(coupon_id);
+    const perUserLogs = await DeliveryLogRepository.getPerUserLogs(coupon_id);
 
     let totalSent = 0, totalDelivered = 0, totalFailed = 0;
     Object.values(channelSummary).forEach(s => {
@@ -26,7 +27,8 @@ async function getDeliveryReport(coupon_id) {
         status: coupon.status,
         total_strings_generated: 54,
         channels: channelSummary,
-        overall_delivery_rate: overallRate
+        overall_delivery_rate: overallRate,
+        per_user_delivery_log: perUserLogs
     };
 }
 

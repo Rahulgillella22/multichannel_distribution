@@ -208,6 +208,12 @@ NOTE: distribute_deal already returns all WA templates. Only call this separatel
 ];
 
 async function handleToolCall(name, args) {
+    // 🔒 SAFETY GUARD: Block any tool name that suggests destructive operations
+    const BLOCKED_KEYWORDS = ['delete', 'remove', 'drop', 'truncate', 'destroy', 'clear', 'purge', 'wipe'];
+    if (BLOCKED_KEYWORDS.some(kw => name.toLowerCase().includes(kw))) {
+        return err('🚫 Destructive operations are permanently disabled on this MCP server. Claude cannot delete any database records.');
+    }
+
     switch (name) {
         case 'distribute_deal': {
             const result = await DealDistributionService.initiateDeal(args);

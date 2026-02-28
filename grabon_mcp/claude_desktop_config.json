@@ -1,15 +1,11 @@
 {
     "mcpServers": {
         "grabon-deal-distributor": {
-            "command": "node",
+            "command": "C:\\Program Files\\nodejs\\New Folder\\node.exe",
             "args": [
-                "src/mcp/server.js"
+                "C:\\Users\\rahul\\OneDrive\\Desktop\\grabon_assgn\\grabon_mcp\\src\\mcp\\server.js"
             ],
-            "cwd": "C:\\Users\\rahul\\OneDrive\\Desktop\\grabon_assgn\\grabon_mcp",
-            "env": {
-                "SUPABASE_URL": "your_supabase_url_here",
-                "SUPABASE_ANON_KEY": "your_supabase_anon_key_here"
-            }
+            "cwd": "C:\\Users\\rahul\\OneDrive\\Desktop\\grabon_assgn\\grabon_mcp"
         }
     }
 }

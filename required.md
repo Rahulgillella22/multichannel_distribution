@@ -1769,3 +1769,187 @@ Input validation, output validation, security, scheduler, analytics all covered.
 Database: Supabase (PostgreSQL) — schema runs in Supabase dashboard, repos use @supabase/supabase-js client.
 Interfaces in src/interfaces/*.ts — all other source files in plain .js.
 Any LLM reading this document has complete context to implement the full system.*
+
+---
+
+## APPENDIX: WHAT WAS ACTUALLY IMPLEMENTED (Beyond Original Spec)
+
+> This section documents every feature built during implementation, including fixes, enhancements, and additional safety features not in the original spec.
+
+---
+
+### A. MCP Server — Core Infrastructure
+
+#### ✅ stdio Transport (Claude Desktop native)
+- Server communicates with Claude Desktop via **stdin/stdout** (not HTTP)
+- `StdioServerTransport` from `@modelcontextprotocol/sdk`
+- Both the Mock Webhook server (Express, port 3001) and the MCP stdio server run **in the same process**
+
+#### ✅ Absolute Path Fix for Claude Desktop (Windows)
+- **Problem found:** Claude Desktop on Windows launches Node.js from `C:\WINDOWS\System32`, making relative paths fail
+- **Fix 1:** `claude_desktop_config.json` uses **absolute path** for `server.js` in `args`
+- **Fix 2:** `dotenv.config()` changed to `dotenv.config({ path: path.resolve(__dirname, '../../.env') })` in **both** `server.js` and `supabase.js` — so `.env` is found regardless of working directory
+- **File:** `src/mcp/server.js` line 1-2, `src/config/supabase.js` line 1-2
+
+#### ✅ Auto-Setup Script (`setup.ps1`)
+- PowerShell script that runs once before first use
+- Auto-detects `node.exe` location on any Windows machine
+- Generates correct `claude_desktop_config.json` with machine-specific absolute paths
+- Installs npm dependencies
+- Creates `.env` if missing
+- Copies config to `%APPDATA%\Claude\claude_desktop_config.json`
+- **File:** `setup.ps1`
+
+---
+
+### B. Database Layer Fixes
+
+#### ✅ `category_id` Prefix Normalizer
+- **Problem found:** `user_preferences` table stores category_id as `cat_food`, `cat_jewellery` etc., but tool inputs pass just `"food"`, `"jewellery"`
+- **Fix:** All three functions in `UserRepository.js` now normalize before querying:
+  ```js
+  const cat_id = category_id.startsWith('cat_') ? category_id : `cat_${category_id}`;
+  ```
+- **File:** `src/repositories/UserRepository.js` — `getEligibleUsersSummary`, `getEligibleUsers`, `getEligibleUsersForCategory`
+
+#### ✅ Per-User Delivery Logs
+- `delivery_logs` table entries now include `user_id` and `user_name` for each delivery attempt
+- `get_delivery_report` tool now returns `per_user_delivery_log` array — shows exactly which user received which message on which channel with what status
+- New function `getPerUserLogs(coupon_id)` added to `DeliveryLogRepository.js`
+- **Files:** `src/services/WebhookService.js` line 126, `src/repositories/DeliveryLogRepository.js`, `src/services/AnalyticsService.js`
+
+---
+
+### C. Security — Delete Protection (3 Layers)
+
+#### ✅ Layer 1 — MCP Tool Name Guard (`tools.js`)
+- At the top of `handleToolCall()`, any tool name containing `delete`, `remove`, `drop`, `truncate`, `destroy`, `clear`, `purge`, `wipe` is **immediately rejected**
+- Returns: `"🚫 Destructive operations are permanently disabled on this MCP server"`
+- **File:** `src/mcp/tools.js`
+
+#### ✅ Layer 2 — Supabase Client Proxy (`supabase.js`)
+- The Supabase client is wrapped in a JavaScript `Proxy` object
+- Any call to `.delete()` on any table/query builder throws a hard error immediately
+- The proxy is recursive — protects all chained method calls
+- **File:** `src/config/supabase.js`
+
+#### ✅ Layer 3 — No Delete in Codebase
+- `grep` search confirmed **zero** `.delete()` calls across all repository files
+- All data operations are INSERT, SELECT, UPDATE only
+
+---
+
+### D. Webhook Delivery System
+
+#### ✅ Per-Channel Payload Validation (Mock Endpoints)
+Each of the 6 mock webhook endpoints validates its specific required fields:
+- `/mock/email` → requires `subject` + `content`
+- `/mock/whatsapp` → requires `assembled_message`
+- `/mock/push` → requires `title` + `body`
+- `/mock/glance` → requires `content`
+- `/mock/payu` → requires `banner_text`
+- `/mock/instagram` → requires `caption`
+
+#### ✅ Intelligent Channel Filtering per User
+Before sending, `shouldSendChannel()` checks:
+- `push` → only sent if user has `device_token` AND current time is between 08:00–22:00
+- `whatsapp` → only sent if user has `phone`
+- `email` → only sent if user has `email`
+- `glance`, `payu`, `instagram` → always sent (no user-specific filter)
+
+#### ✅ Smart Language & Variant Selection per User
+- **Language:** uses `user.preferred_language` if set, else infers from city (Hyderabad/Vizag → Telugu, Mumbai/Delhi → Hindi, default → English)
+- **Variant:** based on activity — inactive >30 days → `social_proof`, account <7 days old → `value`, else → `urgency`
+
+#### ✅ Retry Logic for Failed Deliveries
+- After initial send, `setTimeout(..., 5 * 60 * 1000)` triggers `retryFailedLogs()`
+- Fetches all logs with `status='failed'` and `retry_count < 3`
+- Re-fires webhook for each
+- On 3rd failure → marks as `permanently_failed`
+- **File:** `src/services/WebhookService.js` — `retryFailedLogs()`
+
+#### ✅ Delivery Simulation Probabilities
+- `MockWebhookController.js` uses `Math.random()` to simulate real-world rates:
+  - **80%** → `delivered`
+  - **15%** → `failed`
+  - **5%** → `pending`
+
+---
+
+### E. WhatsApp Template System
+
+#### ✅ Template-Only Enforcement
+- Claude is **forbidden** from writing free-form WhatsApp text
+- All WA content stored as `template_id` + `variables` JSON (never assembled text)
+- Assembly happens at send time via `WhatsAppAssemblyService.assemble()`
+- Variables filled: `{{merchant}}`, `{{discount}}`, `{{min_order}}`, `{{expiry}}`, `{{product_type}}`, `{{destination}}`
+
+#### ✅ WhatsApp Assembly Flow
+```
+generated_content table
+  template_id = "WA_FOOD_EN_VALUE"
+  variables   = {"merchant":"Zomato","discount":"30%","min_order":"₹199","expiry":"15 Mar"}
+        ↓
+WhatsAppAssemblyService.assemble()
+  fetches template structure from whatsapp_templates table
+  replaces all {{variable}} placeholders
+        ↓
+assembled_message = "Hey! Zomato has 30% off — order above ₹199. Ends 15 Mar 🎉"
+        ↓
+POST /mock/whatsapp { assembled_message: "..." }
+```
+
+---
+
+### F. Output Validation (54 Strings)
+
+#### ✅ All Validation Rules Enforced by `OutputValidator.js`
+| Channel | Rule |
+|---|---|
+| `push` | Content split by `\|` — title ≤ 50 chars, body ≤ 100 chars |
+| `glance` | Total content ≤ 160 chars |
+| `payu` | Content ≤ 40 chars |
+| `email` | Must have `subject_line`, `content`, and `cta_text` |
+| `instagram` | Content must contain minimum 3 `#hashtags` |
+| `whatsapp` | Must have `template_id` and `variables` — content must be empty string |
+| All 54 | All 6 × 3 × 3 combinations must be present |
+| Variants | Same channel+language urgency/value variants must not be identical |
+
+---
+
+### G. Scheduler
+
+#### ✅ Category-Based Send Time Rules
+| Category | Send Times |
+|---|---|
+| food | 11:30 and 18:30 daily |
+| jewellery | 10:00 and 18:00 daily |
+| fashion | 10:00 and 20:00 daily |
+| travel | Friday 18:00 |
+| electronics | Saturday 10:00 |
+| grocery | Sunday 09:00 |
+
+#### ✅ Startup Catch-Up
+- On server start, `initScheduler()` queries `schedule_queue` for any due items missed while server was offline
+- Processes them immediately
+
+---
+
+### H. Cultural Localization Instructions (Embedded in Pipeline)
+
+Three sets of cultural writing instructions are returned by `distribute_deal` and embedded in Claude's context before generation:
+
+```
+Telugu: Write like a Hyderabad friend texting. Natural spoken Telugu — NOT formal bookish.
+        Telugu urgency uses family/community context. Never translate English idioms — rewrite culturally.
+
+Hindi:  Write like Delhi/Mumbai friend. Hinglish (Hindi+English mix) is acceptable.
+        More direct and assertive than Telugu urgency.
+
+English: Indian English for urban millennials. Always use ₹ symbol (never Rs or INR).
+         Casual for food/fashion, premium for jewellery/exclusive deals.
+```
+
+---
+
+*Last updated: 2026-02-28 | Implementation complete | All 9 tools live | 54-string pipeline tested end-to-end*

@@ -52,4 +52,15 @@ async function getSummaryByCoupon(coupon_id) {
     return summary;
 }
 
-module.exports = { create, updateRetry, getFailedLogs, getSummaryByCoupon };
+
+async function getPerUserLogs(coupon_id) {
+    const { data, error } = await supabase
+        .from('delivery_logs')
+        .select('user_id, user_name, channel, language, variant, status, retry_count, sent_at')
+        .eq('coupon_id', coupon_id)
+        .order('sent_at', { ascending: true });
+    if (error) return [];
+    return data;
+}
+
+module.exports = { create, updateRetry, getFailedLogs, getSummaryByCoupon, getPerUserLogs };

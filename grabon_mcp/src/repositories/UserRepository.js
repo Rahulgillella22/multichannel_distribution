@@ -1,10 +1,11 @@
 const { supabase } = require('../config/supabase');
 
 async function getEligibleUsersSummary(category_id) {
+    const cat_id = category_id.startsWith('cat_') ? category_id : `cat_${category_id}`;
     const { data, error } = await supabase
         .from('user_preferences')
         .select('users(user_id, preferred_language, location_id, locations(city))')
-        .eq('category_id', category_id)
+        .eq('category_id', cat_id)
         .eq('opted_in', true);
 
     if (error || !data) return { total_users: 0, languages_needed: [], cities: [] };
@@ -28,10 +29,11 @@ async function getEligibleUsersSummary(category_id) {
 }
 
 async function getEligibleUsers(category_id) {
+    const cat_id = category_id.startsWith('cat_') ? category_id : `cat_${category_id}`;
     const { data, error } = await supabase
         .from('user_preferences')
         .select('users(*, locations(city, region))')
-        .eq('category_id', category_id)
+        .eq('category_id', cat_id)
         .eq('opted_in', true);
 
     if (error || !data) return [];
@@ -39,10 +41,11 @@ async function getEligibleUsers(category_id) {
 }
 
 async function getEligibleUsersForCategory(category_id) {
+    const cat_id = category_id.startsWith('cat_') ? category_id : `cat_${category_id}`;
     const { data, error } = await supabase
         .from('user_preferences')
         .select('user_id, users!inner(user_id, name, phone, email, device_token, preferred_language, last_active_at, created_at, locations(city))')
-        .eq('category_id', category_id)
+        .eq('category_id', cat_id)
         .eq('opted_in', true);
 
     if (error || !data) return [];
