@@ -37,7 +37,7 @@ const CHANNEL_LIMITS = {
     push: 'format as "title|body" — title max 50 chars + body max 100 chars — separate with pipe character',
     glance: 'max 160 chars — must work standalone without any context',
     payu: 'max 40 chars — must be action-oriented — start with a verb',
-    instagram: 'caption + minimum 3 hashtags — no strict char limit'
+    instagram: 'caption + minimum 3 hashtags — max 100 char limit'
 };
 
 async function initiateDeal(params) {
