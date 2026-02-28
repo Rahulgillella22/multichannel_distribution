@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS categories (
   tone          TEXT NOT NULL,
   style_guide   TEXT NOT NULL,
   send_times    TEXT NOT NULL,
-  example_words TEXT NOT NULL
+  example_words TEXT NOT NULL,
+  push_style    JSONB DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users (
@@ -149,48 +150,60 @@ ON CONFLICT (location_id) DO NOTHING;
 -- SECTION 3: SEED — CATEGORIES
 -- ============================================================
 
-INSERT INTO categories (category_id, category_name, tone, style_guide, send_times, example_words) VALUES
+INSERT INTO categories (category_id, category_name, tone, style_guide, send_times, example_words, push_style) VALUES
   ('cat_food',
    'food',
    'informal energetic fun',
    'Write like a food-loving friend recommending a deal. Use energy, excitement and mouth-watering descriptions. Short sentences. Active voice. Create FOMO without being aggressive.',
    '["11:30","18:30"]',
-   'Hungry, Grab, Yummy, Sizzling, Delicious, Don''t miss, Hot'),
+   'Hungry, Grab, Yummy, Sizzling, Delicious, Don''t miss, Hot',
+   '{"personality":"Zomato-style: witty, sarcastic, makes the user feel like eating RIGHT NOW. Reference time of day. Make the food sound irresistible. Use hunger guilt.","urgency_example":"title: Your stomach just texted us | body: {{merchant}} {{discount}} off ends tonight. Your dinner plans just got a glow-up.","value_example":"title: Broke but hungry? We got you | body: Save big on {{merchant}}. {{discount}} off, no judgment.","social_proof_example":"title: Half your office already ordered | body: {{merchant}} deals flying off. {{discount}} off. Dont be the only one eating sad food.","rules":["Reference hunger food cravings meal time","Be sarcastic but lovable like a funny friend","Use emojis sparingly max 1-2","Title must feel like a text message not an ad","Never use Grab Avail Utilize too corporate"]}'
+  ),
 
   ('cat_jewellery',
    'jewellery',
    'premium sophisticated aspirational',
    'Write with elegance and prestige. Use occasion-based and aspirational language. For Indian context, reference festivals, auspicious occasions, gifts. Never feel cheap or discount-heavy.',
    '["10:00","18:00"]',
-   'Exclusive, Precious, Timeless, Elegant, Coveted, Rare, Auspicious'),
+   'Exclusive, Precious, Timeless, Elegant, Coveted, Rare, Auspicious',
+   '{"personality":"Tanishq-style: graceful, occasion-aware, aspirational. Never feels cheap. Appeals to gifting, festivals, milestones. No sarcasm.","urgency_example":"title: This wont wait for you | body: {{merchant}} - {{discount}} on precious pieces. Some moments deserve the finest.","value_example":"title: Rare savings rarer beauty | body: {{merchant}} exclusive - {{discount}} off. A piece for every memory.","social_proof_example":"title: Everyone is making it special | body: {{merchant}} - the choice of thousands this season. {{discount}} off limited time.","rules":["Never say cheap deal grab or steal","Reference occasions festivals anniversaries gifting","Sophisticated vocabulary timeless precious rare heirloom","Title should feel like a whisper not a shout","Emojis only elegant ones"]}'
+  ),
 
   ('cat_fashion',
    'fashion',
    'trendy stylish confident',
    'Write like a style-conscious friend sharing a hot tip. Use fashion vocabulary, trend references, season context and FOMO triggers.',
    '["10:00","20:00"]',
-   'Style, Trendy, Must-have, Chic, Look, Season, Fresh, New'),
+   'Style, Trendy, Must-have, Chic, Look, Season, Fresh, New',
+   '{"personality":"Myntra-style: confident, trend-obsessed, FOMO-heavy. Fashion is identity. Use season, styling, and everyone is wearing this angles.","urgency_example":"title: This seasons look wont wait | body: {{merchant}} - {{discount}} off. Miss this and explain your boring outfit forever.","value_example":"title: Style upgrade incoming | body: {{merchant}} sale - {{discount}} off on this seasons hottest looks. Budget-friendly taste-proof.","social_proof_example":"title: Your feed is already full of this look | body: {{merchant}} - {{discount}} off trending styles. Everyones wearing it. Now its your turn.","rules":["Reference current season trends the look","FOMO is your friend mild peer pressure acceptable","Use fashion vocabulary drop collab aesthetic edit lookbook","Title must feel like a DM from a stylish friend","Body max 1 sentence plus offer info"]}'
+  ),
 
   ('cat_travel',
    'travel',
    'adventurous aspirational wanderlust',
    'Paint vivid destination pictures. Use escape and adventure language. Reference weekends and getaways.',
    '["18:00"]',
-   'Explore, Getaway, Adventure, Escape, Journey, Discover, Wander'),
+   'Explore, Getaway, Adventure, Escape, Journey, Discover, Wander',
+   '{"personality":"MakeMyTrip-style: wanderlust, escape, your next trip starts here. Paint a destination picture in a single line. Weekend escape angle.","urgency_example":"title: That trip you keep postponing? | body: {{merchant}} deal - {{discount}} off. Your weekend escape wont book itself.","value_example":"title: Adventure just got affordable | body: {{merchant}} - {{discount}} off. Pack light save big leave Mondays problems behind.","social_proof_example":"title: Everyone from work is already there | body: {{merchant}} - {{discount}} off hot destinations. Dont be the only one without stories.","rules":["Paint a destination picture in title","Reference weekends getaways your next trip","Avoid corporate phrases like avail booking discount","Use escapism Monday blues office stress relief angle","Emojis travel ones max 1"]}'
+  ),
 
   ('cat_electronics',
    'electronics',
    'tech-savvy smart value-focused',
    'Speak to the smart buyer. Reference specs, savings and smart decisions. Use upgrade language.',
    '["10:00"]',
-   'Upgrade, Smart buy, Tech, Power, Performance, Save, Deal'),
+   'Upgrade, Smart buy, Tech, Power, Performance, Save, Deal',
+   '{"personality":"Croma-style: smart, specs-aware, youve been waiting for this. Speaks to the researcher who deliberates before buying. Smart-buy validation.","urgency_example":"title: That tab you left open? Its on sale | body: {{merchant}} - {{discount}} off. Your wishlist just became your cart.","value_example":"title: Smart buy alert | body: {{merchant}} - {{discount}} off premium tech. Your wallet called. It said go for it.","social_proof_example":"title: The review scores are insane | body: {{merchant}} - {{discount}} off. Thousands upgraded already. Your turn.","rules":["Reference wishlist research youve been eyeing this","Validate the smart-buyer identity you know a deal when you see one","Specs performance upgrade language","Avoid hype-y language this buyer is rational","Emojis tech ones max 1"]}'
+  ),
 
   ('cat_grocery',
    'grocery',
    'practical helpful family-oriented',
    'Write like a helpful neighbor sharing a good deal. Focus on savings, family needs, and weekly planning.',
    '["09:00"]',
-   'Fresh, Save, Weekly, Family, Home, Essentials, Stock up')
+   'Fresh, Save, Weekly, Family, Home, Essentials, Stock up',
+   '{"personality":"Blinkit-style: practical, fast, no-nonsense. Speaks to the busy person who doesnt want to think much. Weekly savings, family angle, speed.","urgency_example":"title: Running out? Restock now | body: {{merchant}} - {{discount}} off essentials. Before the weekend rush hits.","value_example":"title: Weekly savings just landed | body: {{merchant}} - {{discount}} off groceries. Your familys budget says thank you.","social_proof_example":"title: Your neighbors already stocked up | body: {{merchant}} deals going fast - {{discount}} off. Dont wait for the shelf to be empty.","rules":["Keep it simple and fast no poetry","Family home practical savings angle","Reference weekly shopping stocking up","Urgency from scarcity stock running out not FOMO","Emojis grocery ones max 1"]}'
+  )
 ON CONFLICT (category_id) DO NOTHING;
 
 
@@ -465,10 +478,11 @@ ON CONFLICT (template_id) DO NOTHING;
 -- ============================================================
 -- SELECT COUNT(*) FROM locations;          -- should be 8
 -- SELECT COUNT(*) FROM merchants;          -- should be 7
--- SELECT COUNT(*) FROM categories;         -- should be 6
+-- SELECT COUNT(*) FROM categories;         -- should be 6 (all with push_style set)
 -- SELECT COUNT(*) FROM users;              -- should be 15
 -- SELECT COUNT(*) FROM user_preferences;   -- should be 34
 -- SELECT COUNT(*) FROM whatsapp_templates; -- should be 30
+-- SELECT category_name, CASE WHEN push_style IS NOT NULL THEN 'SET' ELSE 'MISSING' END AS push_style_status FROM categories;
 
 -- ============================================================
 -- ALL DONE — Your Supabase DB is ready for the MCP server

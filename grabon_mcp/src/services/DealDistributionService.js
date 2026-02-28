@@ -6,8 +6,9 @@ const UserRepository = require('../repositories/UserRepository');
 const TemplateRepository = require('../repositories/TemplateRepository');
 
 const CULTURAL_INSTRUCTIONS = {
-    telugu: `Write Telugu like a friend from Hyderabad texting on WhatsApp.
-Use natural spoken Telugu — NOT formal bookish Telugu.
+    telugu: `CRITICAL: Write in actual Telugu Unicode script characters (e.g. తెలుగు, ఆర్డర్, ఇప్పుడే).
+NEVER use Roman transliteration — writing "Zomato lo" or "ippude" is WRONG. Use "జొమాటో లో" and "ఇప్పుడే".
+Write like a friend from Hyderabad texting on WhatsApp — natural spoken Telugu, NOT formal bookish Telugu.
 Telugu urgency uses community and family context more than individual FOMO.
 Urgency phrases: ఇప్పుడే తీసుకోండి, అవకాశం వదులుకోకండి, చాలా తక్కువ సమయం.
 Value phrases: బాగా ఆదా అవుతుంది, చాలా మంచి డీల్.
@@ -15,8 +16,10 @@ NEVER directly translate English idioms — rewrite culturally.
 Food deals: warmth, home cooking comfort, family meal references.
 Jewellery: gold is auspicious — use precious, occasion-based, celebratory references.`,
 
-    hindi: `Write Hindi like a Delhi or Mumbai friend texting casually.
-Hinglish (Hindi + English mix) is completely natural and acceptable.
+    hindi: `CRITICAL: Write in actual Hindi/Devanagari Unicode script characters (e.g. हिंदी, ऑर्डर, अभी).
+NEVER use Roman transliteration — writing "abhi lo" is WRONG. Use "अभी लो".
+Hinglish (Hindi + English mix) is completely natural — English brand names and common English words are fine.
+Write like a Delhi or Mumbai friend texting casually.
 Hindi urgency is more direct and assertive than Telugu.
 Urgency phrases: अभी लो, मौका मत गँवाओ, सीमित समय.
 Value phrases: बचाओ पैसे, धमाकेदार डील, बढ़िया offer.
@@ -39,6 +42,8 @@ const CHANNEL_LIMITS = {
     payu: 'max 40 chars — must be action-oriented — start with a verb',
     instagram: 'caption + minimum 3 hashtags — max 100 char limit'
 };
+
+// push_notification_style is fetched from the 'push_style' JSON column in Supabase categories table.
 
 async function initiateDeal(params) {
     // Validate
@@ -94,7 +99,9 @@ async function initiateDeal(params) {
         eligible_users_summary: eligibleUsersSummary,
         whatsapp_templates: waTemplates,
         cultural_instructions: CULTURAL_INSTRUCTIONS,
-        channel_limits: CHANNEL_LIMITS
+        channel_limits: CHANNEL_LIMITS,
+        // Fetched from DB — no hardcoding. Add push_style JSON column to categories table.
+        push_notification_style: category ? category.push_style || null : null
     };
 }
 

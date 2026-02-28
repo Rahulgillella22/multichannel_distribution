@@ -29,9 +29,12 @@ This tool:
 5. Returns ALL WhatsApp template structures for all language+variant combinations
 6. Returns cultural instructions per language
 7. Returns channel character limits
+8. Returns push_notification_style — Zomato/Blinkit/Myntra-style push copy personality per category
 After calling this tool Claude must:
 - Read category_style carefully before writing any content
 - Read cultural_instructions before writing in Telugu or Hindi
+- Read push_notification_style BEFORE writing any push channel content — follow the personality, rules, and examples exactly
+- For push: make the title feel like a witty text message (not an ad), use the variant examples as inspiration, always include merchant_name naturally
 - For WhatsApp: fill variables into provided templates ONLY — never free-form text
 - For push: format content as "title|body" separated by pipe character
 - For all other channels: write freely using category style and cultural instructions
@@ -204,6 +207,34 @@ NOTE: distribute_deal already returns all WA templates. Only call this separatel
             },
             required: ['category', 'language', 'variant']
         }
+    },
+    {
+        name: 'preview_push_messages',
+        description: `TESTING / DRY-RUN TOOL — Use this to preview push notification copy ONLY.
+Does NOT save anything to DB. Does NOT fire webhooks. Does NOT require 54 strings.
+Use this when you want to test or review how push notifications will look for a deal.
+This tool returns:
+- push_notification_style for the category (personality, variant examples, rules)
+- cultural_instructions for all 3 languages
+- The deal details (merchant, discount, expiry) for context
+After calling this tool Claude must:
+- Write ONLY 9 push strings: 3 variants (urgency / value / social_proof) × 3 languages (english / hindi / telugu)
+- Follow push_notification_style personality and rules exactly
+- Format each as "title|body" (title max 50 chars, body max 100 chars)
+- Use merchant_name naturally in the copy — not just bolted to the end
+- Present results as a clean readable table or list for human review
+- DO NOT call store_generated_content or any webhook tool after this`,
+        inputSchema: {
+            type: 'object',
+            properties: {
+                merchant_id: { type: 'string', description: 'Must exist in merchants table' },
+                category: { type: 'string', description: 'food/jewellery/fashion/travel/electronics/grocery' },
+                discount_value: { type: 'number', description: 'e.g. 30 for 30% off' },
+                discount_type: { type: 'string', description: 'percentage or flat' },
+                expiry_timestamp: { type: 'string', description: 'ISO datetime' }
+            },
+            required: ['merchant_id', 'category', 'discount_value', 'discount_type', 'expiry_timestamp']
+        }
     }
 ];
 
@@ -279,6 +310,38 @@ async function handleToolCall(name, args) {
         case 'get_whatsapp_templates': {
             const template = await TemplateRepository.findByFilter(args.category, args.language, args.variant);
             return ok(template ? [template] : []);
+        }
+
+        case 'preview_push_messages': {
+            // Dry-run: fetch merchant + push_style from DB, return to Claude for 9-string preview only
+            const MerchantRepository = require('../repositories/MerchantRepository');
+            const merchant = await MerchantRepository.findById(args.merchant_id);
+            if (!merchant) return err(`Merchant '${args.merchant_id}' not found`);
+
+            const category = await CategoryRepository.findByName(args.category);
+            if (!category) return err(`Category '${args.category}' not found`);
+
+            const discountLabel = args.discount_type === 'percentage'
+                ? `${args.discount_value}% off`
+                : `₹${args.discount_value} off`;
+
+            return ok({
+                preview_mode: true,
+                note: 'DRY RUN — nothing saved to DB, no webhooks fired. Write 9 push strings only.',
+                deal_context: {
+                    merchant_name: merchant.merchant_name,
+                    category: args.category,
+                    discount: discountLabel,
+                    expiry: args.expiry_timestamp
+                },
+                push_notification_style: category.push_style || null,
+                cultural_instructions: {
+                    english: 'Write Indian English for urban Indian millennials. Casual, ₹ symbol always, IST context.',
+                    hindi: 'CRITICAL: Write in actual Hindi Devanagari Unicode script characters (e.g. हिंदी, अभी, ऑर्डर). NEVER Roman transliteration — "abhi lo" is WRONG, use "अभी लो". Hinglish is fine — English brand names like Zomato are OK.',
+                    telugu: 'CRITICAL: Write in actual Telugu Unicode script characters (e.g. తెలుగు, ఇప్పుడే, ఆర్డర్). NEVER Roman transliteration — "ippude" or "Zomato lo" is WRONG, use "ఇప్పుడే" and "జొమాటో లో". Natural spoken Hyderabad Telugu, not formal.'
+                },
+                task: 'Generate exactly 9 push strings: urgency + value + social_proof for each of english, hindi, telugu. Format: title|body. Present as a readable preview table.'
+            });
         }
 
         default:

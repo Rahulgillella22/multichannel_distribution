@@ -28,8 +28,8 @@ async function validate(params) {
     // discount_value
     const dv = Number(params.discount_value);
     if (!dv || dv <= 0) errors.push('discount_value must be a positive number');
-    if (params.discount_type === 'percentage' && dv > 100) errors.push('Percentage discount cannot exceed 100');
-    if (params.discount_type === 'flat' && dv > 10000) errors.push('Flat discount cannot exceed ₹10000');
+    if (params.discount_type === 'percentage' && dv >= 96) errors.push('Percentage discount cannot be 96% or above — maximum allowed is 95%');
+    if (params.discount_type === 'flat' && dv > 1000) errors.push('Flat discount cannot exceed ₹1000');
 
     // expiry_timestamp
     const expiry = new Date(params.expiry_timestamp);
