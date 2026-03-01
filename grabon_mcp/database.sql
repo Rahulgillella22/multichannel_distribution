@@ -116,6 +116,11 @@ CREATE TABLE IF NOT EXISTS delivery_logs (
   last_retry_at TIMESTAMPTZ
 );
 
+-- MIGRATION NOTE: If you ran the old schema (without user_id/user_name), run this once:
+-- ALTER TABLE delivery_logs
+--   ADD COLUMN IF NOT EXISTS user_id   TEXT REFERENCES users(user_id),
+--   ADD COLUMN IF NOT EXISTS user_name TEXT;
+
 CREATE TABLE IF NOT EXISTS analytics (
   analytics_id    TEXT PRIMARY KEY,
   merchant_id     TEXT REFERENCES merchants(merchant_id),
