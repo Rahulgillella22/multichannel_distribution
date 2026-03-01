@@ -71,9 +71,12 @@ VALIDATION RULES:
 - instagram must have minimum 3 hashtags (#) in content
 - all 54 combinations must be present (6 channels × 3 variants × 3 languages)
 - urgency and value variants must not be identical for same channel+language
-WHATSAPP RULE:
-- WhatsApp entries must have template_id and variables object
+WHATSAPP RULE — CRITICAL:
+- WhatsApp entries MUST use the EXACT template_id values returned in the whatsapp_templates field from distribute_deal
+- The template_id values always start with 'WA_' — example: WA_ELEC_TE_URGENCY, WA_FOOD_HI_VALUE
+- NEVER invent or guess template IDs like 'electronics_te_urgency' — copy them exactly from distribute_deal output
 - WhatsApp content field should be empty string
+- WhatsApp variables object must be filled with actual deal values (merchant, discount, expiry, etc.)
 If any validation fails this tool returns exactly which strings failed
 so Claude can regenerate ONLY those specific strings and call this tool again.`,
         inputSchema: {

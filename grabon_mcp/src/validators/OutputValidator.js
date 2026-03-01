@@ -64,6 +64,13 @@ function validateAll(contentArray) {
                     channel: 'whatsapp', language: item.language, variant: item.variant,
                     error: 'whatsapp must use template_id — not free-form content'
                 });
+            } else if (!item.template_id.startsWith('WA_')) {
+                // Reject hallucinated IDs — valid ones always start with WA_
+                // e.g. WA_ELEC_TE_URGENCY is valid, electronics_te_urgency is NOT
+                errors.push({
+                    channel: 'whatsapp', language: item.language, variant: item.variant,
+                    error: `Invalid template_id '${item.template_id}'. You MUST use the exact template_id values returned by distribute_deal (they always start with 'WA_'). Do NOT invent template IDs.`
+                });
             }
             if (!item.variables || Object.keys(item.variables || {}).length === 0) {
                 errors.push({

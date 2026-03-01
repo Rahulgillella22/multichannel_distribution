@@ -1,0 +1,16 @@
+name = "grabon-supabase-proxy"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# ── Runtime settings ──────────────────────────────────────────────────────────
+# Workers use the "module" (ES module) format — matches our export default syntax
+# No [vars] here — all sensitive values are stored as encrypted Wrangler secrets:
+#   wrangler secret put SUPABASE_URL
+#   wrangler secret put SUPABASE_SERVICE_KEY
+#   wrangler secret put PROXY_SECRET
+#
+# After deployment the worker URL will be:
+#   https://grabon-supabase-proxy.<your-cf-subdomain>.workers.dev
+
+[observability]
+enabled = true        # enables built-in Cloudflare Worker metrics & logs

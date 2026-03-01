@@ -4,12 +4,21 @@ const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const proxySecret = process.env.PROXY_SECRET;
 
 if (!supabaseUrl || !supabaseKey) {
     throw new Error('Missing SUPABASE_URL or SUPABASE_ANON_KEY in .env');
 }
 
-const _supabase = createClient(supabaseUrl, supabaseKey);
+const _supabase = createClient(supabaseUrl, supabaseKey, {
+    global: {
+        headers: {
+            // Sent on every request — the Cloudflare Worker validates this
+            // before forwarding to Supabase
+            ...(proxySecret ? { 'x-proxy-secret': proxySecret } : {}),
+        },
+    },
+});
 
 // 🔒 SAFETY GUARD: Wrap client to block ALL delete operations.
 // Claude and any MCP tool is strictly READ + WRITE only — never DELETE.

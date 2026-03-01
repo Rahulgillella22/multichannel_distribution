@@ -105,6 +105,8 @@ CREATE TABLE IF NOT EXISTS generated_content (
 CREATE TABLE IF NOT EXISTS delivery_logs (
   log_id        TEXT PRIMARY KEY,
   coupon_id     TEXT REFERENCES coupons(coupon_id),
+  user_id       TEXT REFERENCES users(user_id),
+  user_name     TEXT,
   channel       TEXT NOT NULL,
   language      TEXT NOT NULL,
   variant       TEXT NOT NULL,
